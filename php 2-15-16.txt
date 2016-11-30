@@ -1,0 +1,165 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Standards</title>
+
+</head>
+<form action="index.php" method="post">
+<p>Enter project number: <input type="text" name="yourname" /><br />
+</p>
+<p><input type="submit" value="Sumbit"></p>
+</form>
+<br />
+<?php
+
+$member=$_POST['yourname'];
+//echo $member;
+// Connecting, selecting database
+$link = @mysql_connect('mysql.hostinger.co.uk', 'u836410390_root', 'handroot') or die('Could not connect: ' . mysql_error());
+//echo 'Connected successfully';
+mysql_select_db('u836410390_hand') or die('Could not select database');
+
+if(isset($_POST['yourname']))
+{
+	Generate($member);
+}
+  
+  	
+ 	
+function Generate($memberid)
+{
+	
+	$query = "SELECT * FROM proj where s_id='".$memberid."'";
+	
+	$result = mysql_query($query);
+		
+	while($rowe = mysql_fetch_array($result))
+	{
+	$loge = $rowe['s_id'];
+		
+	}
+	mysql_free_result($result);		
+
+	//echo "<tr><td colspan='3' style='text-align:center;'> ".getInfo($memberid)."<br />"."</td></tr>";
+getInfo($memberid);
+	echo "</table>\n";
+	
+	
+	
+	  
+	
+	
+	
+	
+}
+
+
+
+
+
+
+
+
+
+function getInfo($id)
+{
+	
+	$query = 'select * from proj where s_id="'.$id.'"';
+
+$result = mysql_query($query);
+if (!$result) 
+{
+	$message = 'ERROR:' . mysql_error();
+	return $message;
+}
+else
+{
+	
+$i = 0;
+	echo '<html><body><table><tr>';
+	while ($i < mysql_num_fields($result))
+	{
+		$meta = mysql_fetch_field($result, $i);
+		//	echo '<td>' . $meta->name . '</td>';
+		$i = $i + 1;
+		//echo '<td>' . $meta->name . '</td>';
+}
+	echo '</tr>';
+	
+	$i = 0;
+	while ($row = mysql_fetch_row($result)) 
+	{
+		echo '<tr>';
+		$count = count($row);
+		$y = 0;
+		while ($y < $count)
+		{
+			$c_row = current($row);
+			//	echo '<td>' . $c_row . '</td>';
+			get001($c_row);
+			next($row);
+			$y = $y + 1;
+		}
+		echo '</tr>';
+		$i = $i + 1;
+	}
+	echo '</table></body></html>';
+	mysql_free_result($result);	
+}
+	
+}
+
+
+function get001($num)
+{
+	
+	$query = 'select * from dept where num="'.$num.'"';
+
+$result = mysql_query($query);
+if (!$result) 
+{
+	$message = 'ERROR:' . mysql_error();
+	return $message;
+}
+else
+{
+	
+$i = 0;
+	echo '<html><body><table><tr>';
+	while ($i < mysql_num_fields($result))
+	{
+		$meta = mysql_fetch_field($result, $i);
+		//	echo '<td>' . $meta->name . '</td>';
+		$i = $i + 1;
+	}
+	echo '</tr>';
+	
+	$i = 0;
+	while ($row = mysql_fetch_row($result)) 
+	{
+		echo '<tr>';
+		$count = count($row);
+		$y = 0;
+		while ($y < $count)
+		{
+			$c_row = current($row);
+			echo '<td>' . $c_row . '</td>';
+			next($row);
+			$y = $y + 1;
+		}
+		echo '</tr>';
+		$i = $i + 1;
+	}
+	echo '</table></body></html>';
+	mysql_free_result($result);	
+}	
+}
+
+
+
+
+mysql_close ($link);
+?>
+</body>
+</html>
